@@ -1,6 +1,7 @@
 import chromadb
 from sentence_transformers import SentenceTransformer  
 from typing import List, Dict
+import os
 
 class Vectorstore:
     
@@ -12,7 +13,12 @@ class Vectorstore:
             metadata={'description': "Documents for financial information"}
         )
         
-        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')  
+        if not os.path.exists('./models/all-MiniLM-L6-v2'):
+            self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+            self.embedding_model.save('./models/all-MiniLM-L6-v2')
+        else:
+            self.embedding_model = SentenceTransformer('./models/all-MiniLM-L6-v2')
+
         
         print("Initialization Successful")
         
